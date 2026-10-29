@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: vertex-db
+    restart: always
+    environment:
+      POSTGRES_USER: vertex_user
+      POSTGRES_PASSWORD: vertex_secure_password
+      POSTGRES_DB: vertex_payroll
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vertex_user -d vertex_payroll"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vertex-api
+    restart: always
+    environment:
+      DATABASE_URL: postgresql+psycopg2://vertex_user:vertex_secure_password@db:5432/vertex_payroll
+      SECRET_KEY: ${SECRET_KEY:-production-jwt-secret-replace-in-env}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-8-8sLh3mZ8z6vH1Q9nN2F5wD8eR0yU3iA4kP7jO2xM0=}
+      CORS_ORIGINS: "http://localhost:3000,http://127.0.0.1:3000"
+      AUTO_CREATE_TABLES: "true"
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: vertex-web
+    restart: always
+    environment:
+      NEXT_PUBLIC_API_URL: http://backend:8000/api/v1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: vertex-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025" # SMTP port
+      - "8025:8025" # Web UI for email preview
+
+volumes:
+  postgres_data:

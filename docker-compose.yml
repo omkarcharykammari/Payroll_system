@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # Mailpit: Local mock SMTP server with web UI for inspecting sent emails
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: vertex-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"   # SMTP port
+      - "8025:8025"   # Web UI port
+    environment:
+      MP_MAX_MESSAGES: 500
+      MP_DATA_FILE: ""
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+  # PostgreSQL for production/local containerized runs
+  postgres:
+    image: postgres:16-alpine
+    container_name: vertex-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: vertex
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

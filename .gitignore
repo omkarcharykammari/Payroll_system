@@ -1,0 +1,25 @@
+# Ignore Python virtual environments
+.venv/
+venv/
+ENV/
+
+# Ignore Node packages (if using frontend/backend node frameworks)
+node_modules/
+
+# Ignore SQLite database files (stops CRUD lock crashes)
+*.db
+*.sqlite
+*.sqlite3
+
+# Ignore environment variables / secrets
+.env
+
+.next/
+
+# Ignore IDE configuration folders
+.vscode/
+.idea/
+
+stitch_vertex_hr_payroll_saas/
+
+prompt/

@@ -1,0 +1,72 @@
+/* Vertex Fintech Design System Tokens */
+:root {
+  /* Slate Surface Hierarchy */
+  --surface-base: #f8fafc;
+  --surface-card: #ffffff;
+  --surface-overlay: #ffffff;
+  --surface-muted: #f1f5f9;
+
+  /* Typography Colors */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+
+  /* Brand / Primary Fintech Indigo-Blue */
+  --brand-50: #eff6ff;
+  --brand-100: #dbeafe;
+  --brand-500: #3b82f6;
+  --brand-600: #2563eb;
+  --brand-700: #1d4ed8;
+
+  /* Semantic Feedback */
+  --success-bg: #ecfdf5;
+  --success-text: #047857;
+  --success-border: #a7f3d0;
+
+  --warning-bg: #fffbeb;
+  --warning-text: #b45309;
+  --warning-border: #fde68a;
+
+  --danger-bg: #fef2f2;
+  --danger-text: #b91c1c;
+  --danger-border: #fecaca;
+
+  /* Borders & Dividers */
+  --border-subtle: #e2e8f0;
+  --border-focus: #3b82f6;
+
+  /* Geometry & Grid */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+}
+
+/* Dark mode token overrides */
+.dark {
+  --surface-base: #090d16;
+  --surface-card: #0f172a;
+  --surface-overlay: #1e293b;
+  --surface-muted: #1e293b;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+
+  --border-subtle: #1e293b;
+}
+
+/* Tabular Numerals for currency, financial tables, and time counters */
+.tnum, table td, .tabular-nums {
+  font-variant-numeric: tabular-nums;
+  -moz-font-feature-settings: "tnum";
+  -webkit-font-feature-settings: "tnum";
+  font-feature-settings: "tnum";
+}
+
+/* Smooth micro-transitions */
+* {
+  transition-property: color, background-color, border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
